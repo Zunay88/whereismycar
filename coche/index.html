@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WHERE IS MY CAR?</title>
+
+    <!-- Jquery JS file -->
+    <script type="text/javascript" src="lib/jquery-1.11.3.min.js"></script>
+
+    <!-- AngularJS file -->
+    <script type="text/javascript" src="lib/angular.min.js"></script>
+
+    <!-- Bootstrap JS file -->
+    <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Custom JS file -->
+    <script type="text/javascript" src="lib/app.js"></script>
+
+    <!-- Bootstrap CSS File  -->
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css"/>
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+</head>
+<body ng-app="App">
+
+<div ng-controller="CocheController">
+
+    <!-- Content Section -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>WHERE IS MY CAR?</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="pull-right">
+                    <button class="btn btn-success" data-toggle="modal" data-target="#add_new_coche_modal">Añadir coche
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h3>COCHES:</h3>
+                <table ng-if="coches.length > 0" class="table table-bordered table-responsive table-striped">
+                    <tr>
+                        <!--<th>No</th>-->
+                        <th>Matricula</th>
+                        <th>Marca</th>
+                        <th>Model</th>
+                        <th>Color</th>
+                        <th>Edició</th>
+                    </tr>
+                    <tr ng-repeat="coche in coches">
+                        <!--<td>{{ $index + 1 }}</td>-->
+                        <td>{{ coche.matricula }}</td>
+                        <td>{{ coche.marca }}</td>
+                        <td>{{ coche.model }}</td>
+                        <td>{{ coche.color }}</td>
+                        <td>
+                            <button ng-click="edit($index)"  class="btn btn-primary btn-xs">Editar</button>
+                            <button ng-click="delete($index)" class="btn btn-danger btn-xs">Borrar</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- /Content Section -->
+
+    <!-- Bootstrap Modals -->
+    <!-- Modal - Add New Task -->
+    <div class="modal fade" id="add_new_coche_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Añadir coche</h4>
+                </div>
+                <div class="modal-body">
+
+                    <ul class="alert alert-danger" ng-if="errors.length > 0">
+                        <li ng-repeat="error in errors">
+                            {{ error }}
+                        </li>
+                    </ul>
+
+                    <div class="form-group">
+                        <label for="matricula">Matricula</label>
+                        <input ng-model="coche.matricula" type="text" id="matricula" class="form-control"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="marca">Marca</label>
+                        <input ng-model="coche.marca" type="text" id="marca" class="form-control"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="model">Model</label>
+                        <input ng-model="coche.model" type="text" id="model" class="form-control"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="color">Color</label>
+                        <input ng-model="coche.color" type="text" id="color" class="form-control"/>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" ng-click="addCoche()">Añadir coche</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- // Modal -->
+
+    <!-- Modal - Update Task -->
+    <div class="modal fade" id="modal_update_coche" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Detalles coche</h4>
+                </div>
+                <div class="modal-body">
+
+                    <ul class="alert alert-danger" ng-if="errors.length > 0">
+                        <li ng-repeat="error in errors">
+                            {{ error }}
+                        </li>
+                    </ul>
+
+                    <div class="form-group">
+                        <label for="matricula">Matrícula</label>
+                        <input ng-model="coche_details.matricula" type="text" id="matricula" class="form-control"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="marca">Marca</label>
+                        <input ng-model="coche_details.marca" type="text" id="marca" class="form-control"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="model">Model</label>
+                        <input ng-model="coche_details.model" type="text" id="model" class="form-control"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="color">Color</label>
+                        <input ng-model="coche_details.color" type="text" id="color" class="form-control"/>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" ng-click="updateCoche()">Guardar cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- // Modal -->
+
+</div>
+
+</body>
+</html>
